@@ -15,7 +15,7 @@ class HelperService{
             // Menyimpan path gambar ke array
             $uploadedImages[] = [
                 'path' => $path,
-                'url' => Storage::disk('local')->url($path),
+                'url' => Storage::url($path),
             ];
         }
 
