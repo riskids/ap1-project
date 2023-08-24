@@ -19,9 +19,7 @@ class HelperService{
                 'url' => Storage::url($path),
             ];
         }
-
-        //for test jmeter
-        return response()->json(['message' => 'OK', 'data' => $uploadedImages], Response::HTTP_OK);
+        
         return $uploadedImages;
     }
 

@@ -15,6 +15,10 @@ class UserController extends Controller
 
         if ($request->hasFile('images')) {
             $FacesUrl = $helperService->UploadImages($request->file('images'));
+            
+            //for test jmeter
+            return response()->json(['message' => 'OK', 'data' => $FacesUrl], Response::HTTP_OK);
+
             $DetectFaces = $helperService->DetectFaces($FacesUrl);
 
             return response()->json([
