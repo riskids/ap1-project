@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Service\HelperService;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
 
         if ($request->hasFile('images')) {
             $FacesUrl = $helperService->UploadImages($request->file('images'));
-            
+
             //for test jmeter
             return response()->json(['message' => 'OK', 'data' => $FacesUrl], Response::HTTP_OK);
 
