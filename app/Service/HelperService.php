@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Response;
 
 class HelperService{
     public function UploadImages($images){
@@ -19,7 +20,8 @@ class HelperService{
             ];
         }
 
-        dd($uploadedImages);
+        //for test jmeter
+        return response()->json(['message' => 'OK', 'data' => $uploadedImages], Response::HTTP_OK);
         return $uploadedImages;
     }
 
