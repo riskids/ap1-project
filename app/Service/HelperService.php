@@ -10,12 +10,12 @@ class HelperService{
         $uploadedImages = [];
 
         foreach ($images as $image) {
-            $path = $image->store('images', 'azure'); // Menyimpan gambar ke penyimpanan Azure dengan folder "images"
+            $path = $image->store('images'); // Menyimpan gambar ke penyimpanan Azure dengan folder "images"
 
             // Menyimpan path gambar ke array
             $uploadedImages[] = [
                 'path' => $path,
-                'url' => Storage::disk('azure')->url($path),
+                'url' => Storage::disk('local')->url($path),
             ];
         }
 
