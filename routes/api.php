@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/detect-faces',[UserController::class,'DetectFaces'])->name('user.detect-faces');
+Route::middleware(['throttle:1000,1'])->post('/detect-faces',[UserController::class,'DetectFaces'])->name('user.detect-faces');
