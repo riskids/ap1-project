@@ -37,15 +37,17 @@ class UserController extends Controller
     {
         $response = $helperService->VerifyFace($request->faceId1, $request->faceId2);
 
-        if ($response->status() == 200) {
+        if ($response->successful()) {
             return response()->json([
                 'message' => 'Verify Faces Success',
                 'response' => $response->json(),
             ]);
         }else{
-            // Jika terjadi kesalahan, tangani respons kesalahan
-            $statusCode = $response->status();
-            $errorResponse = $response->json();
+            return response()->json([
+                'message' => 'Verify Faces Failed',
+                'response' => $response->json(),
+            ],
+            $response->status());
         }
     }
 }
