@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Service\HelperService;
+use App\Http\Requests\VerifyFacesRequest;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -31,5 +31,21 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Tidak ada gambar yang diunggah',
         ], 400);
+    }
+
+    public function VerifyFaces(VerifyFacesRequest $request, HelperService $helperService, ) 
+    {
+        $response = $helperService->VerifyFace($request->faceId1, $request->faceId2);
+
+        if ($response->successful()) {
+            return response()->json([
+                'message' => 'Verify Faces Success',
+                'response' => $response->json(),
+            ]);
+        }else{
+            // Jika terjadi kesalahan, tangani respons kesalahan
+            $statusCode = $response->status();
+            $errorResponse = $response->json();
+        }
     }
 }

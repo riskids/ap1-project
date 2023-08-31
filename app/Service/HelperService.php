@@ -45,7 +45,6 @@ class HelperService{
     public function VerifyFace($faceid1, $faceid2){
         $key = env('AZURE_FACE_API_KEY'); //secretkey, get from .env
         $url = env('AZURE_FACE_API_ENDPOINT'); //endpoint api azure, get from .env
-
             $response = Http::withHeaders([
                 'Content-Type: application/json',
                 'Accept' => 'application/json',
@@ -54,8 +53,8 @@ class HelperService{
             ->post($url . "/face/v1.0/verify", [
                 'faceId1' => $faceid1, //face id1
                 'faceId2' => $faceid2, //face id2
-            ])[0];
-
+            ]);
+            
         return $response;
     }
     
