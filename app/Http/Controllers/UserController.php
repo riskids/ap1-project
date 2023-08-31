@@ -43,7 +43,11 @@ class UserController extends Controller
                 'response' => $response->json(),
             ]);
         }else{
-            return  $response->json();
+            return response()->json([
+                'message' => 'Verify Faces Failed',
+                $response->json(),
+            ],
+            $response->status());
         }
     }
 }
