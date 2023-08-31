@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Cache;
 
 class AzureFaceApiMiddleware
 {
@@ -15,11 +15,25 @@ class AzureFaceApiMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $key = 'global'; //ganti dengan alamat ip, jika ingin membatasi per ip
+        $key = 'custom_rate_limiter:' . md5($request->ip());
         $maxRequests = 9;
-        $perSecond = 1;
+        $interval = 1; // Detik
 
-        RateLimiter::perSecond($key, $maxRequests)->consume($perSecond);
+        $currentTimestamp = microtime(true);
+        $requests = Cache::get($key, []);
+
+        // Hapus request yang lebih lama dari interval
+        $requests = array_filter($requests, function ($timestamp) use ($currentTimestamp, $interval) {
+            return $currentTimestamp - $timestamp <= $interval;
+        });
+
+        // Jika jumlah request dalam interval lebih dari batasan, beri delay
+        if (count($requests) >= $maxRequests) {
+            usleep(($interval * 1000000) - ($currentTimestamp - end($requests)) * 1000000);
+        }
+
+        $requests[] = $currentTimestamp;
+        Cache::put($key, $requests, $interval * 2); // Simpan dalam 2 interval
 
         return $next($request);
     }
